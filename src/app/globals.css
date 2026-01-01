@@ -172,91 +172,105 @@ footer {
     padding: 0; /* Suppression du padding interne */
 }
 /* =========================================
-   VERSION MOBILE (Responsive)
+   VERSION MOBILE (Responsive) - CORRIGÉE
    S'active uniquement sur les écrans < 768px
    ========================================= */
 @media (max-width: 768px) {
 
-  /* 1. HEADER : On empile le logo et le menu */
+  /* 1. HEADER : On garde la pile Logo / Menu */
   header.main-header {
     flex-direction: column !important;
     height: auto !important;
-    padding: 15px 5% !important;
-    position: relative !important; /* On détache le header fixe sur mobile si ça gêne, sinon garder fixed */
+    padding: 10px 5% !important;
+    position: relative !important; 
   }
-
-  /* Logo plus petit */
   header.main-header img.focus-docutheque {
-    height: 50px !important; 
-    margin-bottom: 15px;
+    height: 55px !important; 
+    margin-bottom: 10px;
   }
-
-  /* Menu : on réduit les textes et l'espace */
   header.main-header nav {
     gap: 15px !important;
     width: 100%;
     justify-content: center;
-    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne si besoin */
+    flex-wrap: wrap;
+    margin-bottom: 10px;
   }
-
   header.main-header .nav-link,
   header.main-header .btn-docutheque {
-    font-size: 0.9rem !important;
-    padding: 5px 10px !important;
+    font-size: 0.85rem !important;
+    padding: 5px 8px !important;
   }
 
-  /* 2. CORPS DE PAGE : On évite que le contenu passe sous le header */
+  /* 2. CORPS DE PAGE */
   main {
-    padding-top: 20px !important; /* Ajustez selon si vous gardez le header fixed ou pas */
+    padding-top: 10px !important; 
   }
 
-  /* 3. SLIDER HERO */
-  /* On force le texte à être plus petit */
-  .hero-section h2 {
-    font-size: 1.8rem !important;
-    line-height: 1 !important;
+  /* 3. SLIDER HERO (Correction du texte disparu) */
+  .hero-section {
+    padding-top: 0 !important; /* On colle au header */
   }
+  
+  /* On cible la boîte qui contient l'image de fond */
+  .hero-section > div > div > div > div > div {
+    /* Hauteur plus raisonnable pour mobile */
+    height: 50vh !important; 
+    min-height: 300px !important;
+    
+    /* On réduit les marges intérieures qui poussaient le texte dehors */
+    padding: 20px !important; 
+    align-items: flex-end !important;
+    
+    /* On centre l'image pour qu'elle soit moins rognée bizarrement */
+    background-position: center center !important; 
+  }
+
+  /* Le Titre du Slider */
+  .hero-section h2 {
+    font-size: 1.8rem !important; /* Beaucoup plus petit */
+    line-height: 1 !important;
+    margin-bottom: 5px !important;
+  }
+  
+  /* Le Sous-titre du Slider */
   .hero-section p {
     font-size: 0.9rem !important;
-  }
-  /* On réduit la hauteur du slider sur mobile */
-  .hero-section > div > div > div {
-    height: 40vh !important; 
-    min-height: 250px !important;
-    padding: 20px !important;
+    margin-top: 0 !important;
   }
 
   /* 4. DOCUTHÈQUE & BANNIÈRE */
-  /* La grille passe en 2 colonnes (plus petites) pour voir plus de films */
-  .docu-hero {
-     padding: 30px 15px !important;
-  }
-  
-  /* Grille des films : 2 par ligne sur mobile */
   .docutheque-grid, 
   div[style*="display: grid"] { 
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
+    gap: 10px !important;
   }
   
-  /* Bannière Docuthèque (Image de fond) */
   .docu-banner {
     height: 200px !important;
-  }
-  .docu-banner .logo-wrapper img {
-    max-height: 50px !important;
+    margin: 40px 0 !important;
   }
   .docu-banner .banner-text {
     font-size: 0.8rem !important;
-    white-space: normal !important; /* Permet au texte de passer à la ligne */
     padding: 0 10px;
+    white-space: normal !important;
   }
 
-  /* 5. JOURNAL (À LA UNE) */
-  /* Sur mobile, le journal est déjà en 1 colonne grâce à votre CSS initial, 
-     mais on peut réduire le titre "À LA UNE" */
+  /* 5. JOURNAL (ARTICLES) - Correction des images coupées */
   section h2 {
     font-size: 2rem !important;
+  }
+  
+  /* On cible l'image dans la carte article */
+  .news-card > div:first-child {
+    /* On force un ratio 16/9 pour voir plus d'image */
+    min-height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+  }
+  
+  /* Le texte des articles */
+  .news-card h3 {
+    font-size: 1.1rem !important;
   }
 
   /* 6. FOOTER */
