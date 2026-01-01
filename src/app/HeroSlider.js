@@ -28,10 +28,12 @@ export default function HeroSlider() {
       .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ height: '500px', background: '#fff' }}></div>;
+  // Placeholder : On ajoute une marge en haut pour simuler la place du header
+  if (loading) return <div style={{ marginTop: '65px', height: '400px', background: '#fff' }}></div>;
 
   return (
-    <section className="hero-section">
+    // MODIF 1 : On pousse la section vers le bas (65px = hauteur du Header)
+    <section className="hero-section" style={{ paddingTop: '65px' }}>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         autoHeight={true}
@@ -43,16 +45,19 @@ export default function HeroSlider() {
           <SwiperSlide key={slide._id || index}>
             <Link href={slide.link || '#'} style={{ textDecoration: 'none' }}>
               <div style={{ 
-                height: '65vh', 
-                minHeight: '500px',
+                // MODIF 2 : Hauteur ajustée (55vh est un bon compromis)
+                // L'image est maintenant entièrement visible sous le menu
+                height: '55vh',      
+                minHeight: '400px',
+                
                 backgroundImage: `url(${urlFor(slide.image).url()})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'flex-end',
-                padding: '60px 5%'
+                padding: '30px 5%'
               }}>
-                {/* Overlay pour lisibilité */}
+                {/* Overlay */}
                 <div style={{ 
                   position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
                   background: 'linear-gradient(transparent 60%, rgba(0,0,0,0.6) 100%)'
@@ -61,7 +66,7 @@ export default function HeroSlider() {
                 <div style={{ position: 'relative', zIndex: 2, color: '#fff' }}>
                   <h2 style={{ 
                     fontFamily: 'var(--font-bebas)', 
-                    fontSize: '4rem', 
+                    fontSize: '2.5rem', /* Taille maîtrisée */
                     margin: 0, 
                     lineHeight: '0.9' 
                   }}>
@@ -69,8 +74,8 @@ export default function HeroSlider() {
                   </h2>
                   <p style={{ 
                     fontFamily: 'var(--font-montserrat)', 
-                    color: '#33a002', /* TON VERT */
-                    fontSize: '1.2rem', 
+                    color: '#33a002',
+                    fontSize: '1rem',
                     fontWeight: '700',
                     margin: '5px 0 0 0'
                   }}>

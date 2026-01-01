@@ -11,28 +11,24 @@ export default function Header() {
       width: '100%', 
       boxSizing: 'border-box', 
       zIndex: 100, 
-      // Padding réduit (15px au lieu de 35px) pour un header moins "haut"
-      padding: '15px 5%', 
+      // MODIF : Padding un peu plus généreux pour le grand logo
+      padding: '10px 5%', 
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
-      
-      // 1. Fond blanc très légèrement transparent (0.95)
       backgroundColor: 'rgba(255, 255, 255, 0.95)',
-      
-      // 2. Ligne noire solide en bas pour bien délimiter
-      // Si tu préfères le vert, remplace #1a1a1a par #33a002
-      borderBottom: '3px solid #1a1a1a' 
+      borderBottom: '3px solid #1a1a1a',
+      // MODIF : On augmente la hauteur de la barre pour loger le logo (100px)
+      height: '100px' 
     }}>
       
-      {/* --- STYLES CSS --- */}
+      {/* --- VOS STYLES INCHANGÉS --- */}
       <style>{`
         .nav-link {
           position: relative;
           text-decoration: none;
           color: #1a1a1a;
           font-family: var(--font-bebas);
-          /* Police plus grosse (1.6rem) pour mettre en avant */
           font-size: 1.6rem; 
           letter-spacing: 1px;
           padding: 5px 0;
@@ -47,7 +43,7 @@ export default function Header() {
           content: '';
           position: absolute;
           width: 0;
-          height: 3px; /* Soulignement un peu plus épais */
+          height: 3px; 
           bottom: -5px;
           left: 0;
           background-color: #33a002;
@@ -59,11 +55,11 @@ export default function Header() {
         }
 
         .btn-docutheque {
-          padding: 10px 25px; /* Bouton un peu plus grand */
-          border: 3px solid #1a1a1a; /* Bordure plus épaisse */
+          padding: 10px 25px; 
+          border: 3px solid #1a1a1a; 
           color: #1a1a1a;
           font-family: var(--font-bebas);
-          font-size: 1.6rem; /* Texte plus gros */
+          font-size: 1.6rem; 
           text-decoration: none;
           transition: all 0.3s ease;
           background: transparent;
@@ -85,12 +81,12 @@ export default function Header() {
           width={0}
           height={0}
           sizes="100vw"
-          // On garde ta contrainte de 90px de haut
-          style={{ width: 'auto', height: '90px' }} 
+          // MODIFICATION ICI : On passe à 75px (au lieu de 50px)
+          style={{ width: 'auto', height: '75px' }} 
         />
       </Link>
 
-      {/* 2. NAVIGATION */}
+      {/* 2. NAVIGATION INCHANGÉE */}
       <nav style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
         
         <Link href="/article" className="nav-link">

@@ -17,7 +17,7 @@ function getYoutubeId(url) {
   return (match && match[2].length === 11) ? match[2] : null;
 }
 
-// --- COMPOSANT CARTE FILM (Style Netflix) ---
+// --- COMPOSANT CARTE FILM (Version Compacte) ---
 function FilmCard({ film, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,10 +31,10 @@ function FilmCard({ film, onClick }) {
       <div style={{
         position: 'relative',
         aspectRatio: '2/3', 
-        borderRadius: '20px', 
+        borderRadius: '12px', /* Arrondi réduit */
         overflow: 'hidden', 
-        boxShadow: isHovered ? '0 20px 40px rgba(0,0,0,0.3)' : '0 10px 20px rgba(0,0,0,0.1)',
-        transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+        boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.3)' : '0 8px 15px rgba(0,0,0,0.1)',
+        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
         transition: 'all 0.3s ease',
         backgroundColor: '#000'
       }}>
@@ -45,32 +45,59 @@ function FilmCard({ film, onClick }) {
             style={{ 
               width: '100%', height: '100%', objectFit: 'cover', 
               transition: 'filter 0.3s ease',
-              filter: isHovered ? 'brightness(0.4) blur(2px)' : 'brightness(1)' 
+              filter: isHovered ? 'brightness(0.3) blur(2px)' : 'brightness(1)' 
             }}
           />
         )}
         
-        {/* Overlay avec infos */}
+        {/* Overlay avec infos - Tout est réduit ici */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          padding: '20px', textAlign: 'center',
+          padding: '15px', textAlign: 'center',
           opacity: isHovered ? 1 : 0,
-          transform: isHovered ? 'translateY(0)' : 'translateY(20px)',
+          transform: isHovered ? 'translateY(0)' : 'translateY(10px)',
           transition: 'all 0.3s ease',
         }}>
-          <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.5rem', margin: '0 0 10px 0', lineHeight: '0.9', color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>
+          <h3 style={{ 
+            fontFamily: 'var(--font-bebas)', /* Montserrat Bold */
+            fontWeight: '900',
+            fontSize: '1.4rem', /* Était 2.5rem */
+            margin: '0 0 5px 0', 
+            lineHeight: '1.1', 
+            color: '#fff', 
+            textTransform: 'uppercase'
+          }}>
             {film.titre}
           </h3>
-          <p style={{ fontFamily: 'var(--font-montserrat)', fontSize: '1rem', color: '#33a002', fontWeight: '700', margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>
+          <p style={{ 
+            fontFamily: 'var(--font-bebas)', 
+            fontSize: '0.85rem', /* Réduit */
+            color: '#33a002', 
+            fontWeight: '700', 
+            margin: 0, 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px' 
+          }}>
             {film.realisateur}
           </p>
           {film.anneeProduction && (
-            <span style={{ display: 'block', fontFamily: 'var(--font-montserrat)', fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', marginTop: '10px' }}>
+            <span style={{ display: 'block', fontFamily: 'var(--font-bebas)', fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', marginTop: '5px' }}>
               {film.anneeProduction}
             </span>
           )}
-          <div style={{ marginTop: '20px', border: '2px solid #33a002', padding: '8px 20px', borderRadius: '50px', color: '#fff', fontFamily: 'var(--font-bebas)', fontSize: '1.2rem', letterSpacing: '1px' }}>
+          <div style={{ 
+            marginTop: '15px', 
+            border: '1px solid #33a002', 
+            padding: '6px 15px', 
+            borderRadius: '50px', 
+            color: '#fff', 
+            fontFamily: 'var(--font-titles)', 
+            fontSize: '0.8rem', /* Bouton plus discret */
+            fontWeight: '700',
+            letterSpacing: '1px',
+            textTransform: 'uppercase'
+          }}>
             Regarder
           </div>
         </div>
@@ -99,9 +126,10 @@ function VideoPlayerModal({ film, onClose }) {
       <button 
         onClick={onClose}
         style={{
-          position: 'absolute', top: '30px', right: '30px',
+          position: 'absolute', top: '20px', right: '20px',
           background: 'none', border: 'none', color: 'white',
-          fontSize: '3rem', cursor: 'pointer', fontFamily: 'var(--font-bebas)',
+          fontSize: '2rem', /* Plus petit */
+          cursor: 'pointer', fontFamily: 'sans-serif',
           zIndex: 11001
         }}
       >
@@ -109,7 +137,7 @@ function VideoPlayerModal({ film, onClose }) {
       </button>
 
       <div 
-        style={{ width: '100%', maxWidth: '1000px', aspectRatio: '16/9', position: 'relative', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
+        style={{ width: '100%', maxWidth: '900px', aspectRatio: '16/9', position: 'relative', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
         onClick={(e) => e.stopPropagation()} 
       >
         {videoId ? (
@@ -151,8 +179,8 @@ export default function Docutheque() {
   );
 
   return (
-    // Retour au fond blanc
-    <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '120px' }}>
+    // PaddingTop ajusté : 80px suffit car le header fait 65px
+    <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '80px' }}>
       <Header />
 
       {selectedFilm && (
@@ -161,13 +189,13 @@ export default function Docutheque() {
 
       <section style={{ padding: '0 5%' }}>
         
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '60px', marginTop: '50px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', marginTop: '20px' }}>
           
-          {/* Logo corrigé : logo-docutheque.png */}
+          {/* Logo réduit (70px au lieu de 110px) */}
           <img 
             src="/images/logo-docutheque.png" 
             alt="La Docuthèque" 
-            style={{ height: '110px', width: 'auto', marginBottom: '30px' }}
+            style={{ height: '70px', width: 'auto', marginBottom: '20px' }}
           />
           
           <input
@@ -176,11 +204,12 @@ export default function Docutheque() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              width: '100%', maxWidth: '500px', padding: '15px 25px',
-              borderRadius: '50px', border: '2px solid #33a002',
-              fontFamily: 'var(--font-montserrat)', fontSize: '1rem', 
+              width: '100%', maxWidth: '400px', /* Barre plus étroite */
+              padding: '10px 20px', /* Padding réduit */
+              borderRadius: '50px', border: '1px solid #33a002',
+              fontFamily: 'var(--font-titles)', fontSize: '0.9rem', 
               outline: 'none', textAlign: 'center', 
-              backgroundColor: '#fff', // Fond blanc pour l'input
+              backgroundColor: '#fff',
               color: '#1a1a1a',
               boxShadow: '0 5px 15px rgba(0,0,0,0.05)'
             }}
@@ -188,13 +217,16 @@ export default function Docutheque() {
         </div>
 
         {loading ? (
-          <p style={{ textAlign: 'center', fontFamily: 'var(--font-montserrat)', color: '#666' }}>Chargement...</p>
+          <p style={{ textAlign: 'center', fontFamily: '8var(--font-titles)', color: '#666' }}>Chargement...</p>
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '40px',
-            paddingBottom: '80px'
+            /* C'EST ICI QUE TOUT CHANGE : minmax(200px) au lieu de 300px -> Affiches plus petites */
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            gap: '25px', /* Espace réduit */
+            paddingBottom: '80px',
+            maxWidth: '1000px', /* On centre la grille pour ne pas qu'elle soit trop large sur grand écran */
+            margin: '0 auto'
           }}>
             {filteredFilms.map(film => (
               <FilmCard 

@@ -4,13 +4,9 @@ import Image from 'next/image';
 
 export default function BannerDocutheque() {
   return (
-    // CHANGEMENT ICI :
-    // margin: '100px 0 50px 0' signifie : 
-    // 100px en haut (pour l'écart avec le slider)
-    // 0px à droite
-    // 50px en bas (pour l'écart avec la suite)
-    // 0px à gauche
-    <section style={{ width: '100%', margin: '100px 0 50px 0' }}>
+    // CHANGEMENT : Marges verticales réduites (60px et 30px) pour l'aspect compact
+    // Width 100% assure que ça touche les bords (si placé hors d'un conteneur avec padding)
+    <section style={{ width: '100%', margin: '60px 0 30px 0' }}>
       
       <Link href="/docutheque" className="docu-banner">
         
@@ -22,7 +18,8 @@ export default function BannerDocutheque() {
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 400px;
+            /* MODIFICATION : Hauteur réduite de 400px à 300px */
+            height: 300px;
             text-decoration: none;
             overflow: hidden;
           }
@@ -55,6 +52,7 @@ export default function BannerDocutheque() {
             text-align: center;
             width: 100%; 
             transition: transform 0.3s ease;
+            padding: 0 20px; /* Sécurité pour pas que le texte touche les bords sur mobile */
           }
 
           .docu-banner:hover .logo-wrapper {
@@ -63,13 +61,15 @@ export default function BannerDocutheque() {
 
           .banner-text {
             color: #ffffff;
+            /* MODIFICATION : On garde Arial, mais on réduit la taille (1rem) */
             font-family: Arial, sans-serif;
-            font-size: 1.2rem;
+            font-size: 1rem; 
             font-weight: 500;
-            margin-top: 20px;
-            white-space: nowrap; 
-            max-width: 100%;     
+            margin-top: 15px;
+            /* On enlève le white-space nowrap pour éviter les soucis sur mobile si le texte est long */
+            max-width: 600px;     
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+            line-height: 1.5;
           }
         `}</style>
 
@@ -83,7 +83,8 @@ export default function BannerDocutheque() {
             alt="Focus Docuthèque"
             width={300}  
             height={100} 
-            style={{ width: 'auto', height: 'auto', maxHeight: '130px' }}
+            // MODIFICATION : Logo réduit (maxHeight 80px au lieu de 130px)
+            style={{ width: 'auto', height: 'auto', maxHeight: '80px' }}
           />
           
           <p className="banner-text">

@@ -40,9 +40,10 @@ export default async function HomePage() {
       {/* 1. LE SLIDER */}
       <HeroSlider />
 
+      {/* 2. BANNIÈRE DOCUTHÈQUE */}
       <BannerDocutheque />
 
-      {/* 2. STYLE CSS INTÉGRÉ (Pour la grille journal) */}
+      {/* 3. STYLE CSS SPÉCIFIQUE "JOURNAL COMPACT" */}
       <style>{`
         .journal-grid {
           display: grid;
@@ -54,7 +55,8 @@ export default async function HomePage() {
         @media (min-width: 900px) {
           .journal-grid {
             grid-template-columns: repeat(12, 1fr);
-            grid-auto-rows: minmax(250px, auto);
+            /* Hauteur de ligne réduite pour l'aspect compact */
+            grid-auto-rows: minmax(200px, auto); 
           }
           
           /* Le 1er article : Grand format (Prend 2/3 largeur, 2 hauteurs) */
@@ -62,16 +64,19 @@ export default async function HomePage() {
             grid-column: span 8;
             grid-row: span 2;
           }
-          .news-item:nth-child(1) h3 { font-size: 2.5rem !important; }
+          /* Titre du 1er article : On garde Bebas mais on réduit la taille (2.2rem au lieu de 2.5rem ou plus) */
+          .news-item:nth-child(1) h3 { 
+              font-size: 2.2rem !important; 
+          }
 
-          /* Le 2ème et 3ème : Colonne de droite (Empilés) */
+          /* Le 2ème et 3ème : Colonne de droite */
           .news-item:nth-child(2),
           .news-item:nth-child(3) {
             grid-column: span 4;
             grid-row: span 1;
           }
 
-          /* Les 4, 5, 6 : En bas, alignés */
+          /* Les 4, 5, 6 : En bas */
           .news-item:nth-child(n+4) {
             grid-column: span 4;
             grid-row: span 1;
@@ -81,19 +86,21 @@ export default async function HomePage() {
         .news-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
       `}</style>
 
-      {/* 3. LA SECTION ACTUALITÉS */}
-      <section style={{ padding: '80px 5%', maxWidth: '1400px', margin: '0 auto' }}>
+      {/* 4. LA SECTION ACTUALITÉS */}
+      {/* MODIF : Max-width 1000px pour s'aligner avec le slider compact */}
+      <section style={{ padding: '60px 5%', maxWidth: '1000px', margin: '0 auto' }}>
         
         {/* Titre Section */}
         <div style={{ 
-          borderBottom: '2px solid #1a1a1a', marginBottom: '40px', paddingBottom: '10px',
+          borderBottom: '2px solid #1a1a1a', marginBottom: '30px', paddingBottom: '10px',
           display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'
         }}>
-          <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: '3rem', margin: 0, lineHeight: 1 }}>
+          {/* POLICE BEBAS RESTAURÉE + VERT #33a002 */}
+          <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: '2.5rem', margin: 0, lineHeight: 0.9 }}>
             À LA <span style={{ color: '#33a002' }}>UNE</span>
           </h2>
-          <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.9rem', color: '#666', marginBottom: '5px' }}>
-            Dernières actualités sur FOCUS documentaire
+          <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.85rem', color: '#666', marginBottom: '3px' }}>
+            Dernières actualités
           </span>
         </div>
 
@@ -103,7 +110,7 @@ export default async function HomePage() {
             <Link 
               key={item._id} 
               href={item._type === 'article' ? `/article/${item.slug.current}` : `/docutheque`} 
-              className={`news-item news-item-${index}`} // Classe pour cibler en CSS
+              className={`news-item news-item-${index}`} 
               style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
             >
               <article className="news-card" style={{ 
@@ -116,11 +123,12 @@ export default async function HomePage() {
               }}>
                 
                 {/* Image */}
-                <div style={{ position: 'relative', width: '100%', flexGrow: 1, minHeight: '200px', backgroundColor: '#f0f0f0' }}>
+                <div style={{ position: 'relative', width: '100%', flexGrow: 1, minHeight: '180px', backgroundColor: '#f0f0f0' }}>
                   {/* Étiquette sur l'image */}
                   <div style={{ 
                     position: 'absolute', top: 10, left: 10, zIndex: 2,
                     padding: '5px 10px', 
+                    /* RESTAURATION DU VERT #33a002 */
                     backgroundColor: item._type === 'article' ? '#1a1a1a' : '#33a002', 
                     color: '#fff', fontFamily: 'var(--font-montserrat)', fontSize: '0.7rem', fontWeight: 'bold',
                     textTransform: 'uppercase'
@@ -142,10 +150,12 @@ export default async function HomePage() {
 
                 {/* Texte */}
                 <div style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
+                  
+                  {/* POLICE BEBAS RESTAURÉE */}
                   <h3 style={{ 
                     fontFamily: 'var(--font-bebas)', 
-                    fontSize: '1.4rem', // Taille par défaut, écrasée par le CSS pour le 1er
-                    margin: '0 0 10px 0', lineHeight: '1.1'
+                    fontSize: '1.2rem', /* Taille réduite (était 1.4rem) */
+                    margin: '0 0 10px 0', lineHeight: '1'
                   }}>
                     {item.title}
                   </h3>
@@ -156,11 +166,12 @@ export default async function HomePage() {
                     </p>
                   </div>
 
+                  {/* POLICE MONTSERRAT RESTAURÉE */}
                   <p style={{ 
-                    fontFamily: 'var(--font-montserrat)', fontSize: '0.9rem', color: '#555', lineHeight: '1.5',
+                    fontFamily: 'var(--font-montserrat)', fontSize: '0.85rem', color: '#555', lineHeight: '1.4',
                     display: '-webkit-box', WebkitLineClamp: '3', WebkitBoxOrient: 'vertical', overflow: 'hidden'
                   }}>
-                    {item.excerpt ? item.excerpt.substring(0, 100) + '...' : ''}
+                    {item.excerpt ? item.excerpt.substring(0, 90) + '...' : ''}
                   </p>
   
                 </div>

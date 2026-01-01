@@ -8,16 +8,20 @@
   --text-dark: #1a1a1a;
   --font-titles: 'Montserrat', sans-serif;
   --font-body: 'Lora', serif;
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.05); /* Ombres réduites */
   --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* 2. BASE ET TYPOGRAPHIE */
+html {
+  font-size: 13px; /* On réduit la base globale pour que les 'rem' rétrécissent */
+}
+
 body {
   background-color: var(--bg-light);
   color: var(--text-dark);
   font-family: var(--font-body);
-  line-height: 1.7;
+  line-height: 1.6; /* Ligne un peu moins haute */
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
@@ -25,16 +29,18 @@ body {
 h1, h2, h3 {
   font-family: var(--font-titles);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   margin: 0;
 }
 
 /* 3. LE HEADER (Menu) */
+/* Note : Le style principal est géré dans votre Header.js, 
+   mais on garde ceci pour assurer la cohérence si besoin */
 .main-header {
   background: white;
-  padding: 15px 5%; /* On réduit un peu la hauteur pour plus d'élégance */
+  padding: 8px 5%; /* Réduit de 15px à 8px */
   display: flex;
-  justify-content: space-between; /* Pousse le logo à gauche et la nav à droite */
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   position: sticky;
@@ -42,90 +48,74 @@ h1, h2, h3 {
   z-index: 1000;
 }
 
-.logo h1 {
-  font-weight: 900;
-  color: var(--focus-green);
-  font-size: 1.6rem;
-  letter-spacing: -1px;
-}
-
-.main-nav {
-  display: flex;
-  gap: 30px; /* Espace régulier entre chaque bouton */
-}
-.main-nav a {
-  font-family: var(--font-titles);
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-decoration: none;
-  color: var(--text-dark);
-  margin-left: 30px;
-  transition: var(--transition);
-  opacity: 0.7;
-}
-
-.main-nav a:hover {
-  color: var(--focus-green);
-  opacity: 1;
-}
-
-/* 4. LE BANDEAU (Slider) */
+/* 4. LE BANDEAU (Slider / Actualités) */
 .hero-banner {
-  padding: 30px 5%;
+  padding: 20px 5%; /* Réduit de 30px */
+  /* AJOUT : On centre et on limite la largeur pour l'effet compact */
+  max-width: 900px; 
+  margin: 0 auto;
 }
 
 .hero-banner > div {
-  border-radius: 20px !important; /* Arrondis pour casser le côté rigide */
+  border-radius: 15px !important;
   box-shadow: var(--shadow-soft);
   overflow: hidden;
   border: 1px solid rgba(0,0,0,0.03);
   transition: var(--transition);
+  /* AJOUT : On empêche le slider de devenir trop haut */
+  max-height: 400px;
 }
 
 /* 5. FOCUS DOCUTHÈQUE (Section centrale) */
 .docutheque-hero {
-  margin: 60px auto;
-  max-width: 1100px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--focus-green), var(--focus-dark-green));
-  padding: 80px 40px;
+  margin: 30px auto; /* Réduit de 60px */
+  max-width: 850px;  /* Réduit de 1100px -> Très important pour l'effet compact */
+  border-radius: 15px;
+  
+  /* MODIFICATION : On utilise votre image et on garde le dégradé par-dessus pour la lisibilité */
+  background: linear-gradient(135deg, rgba(79, 128, 56, 0.9), rgba(63, 104, 44, 0.9)), url('/images/fond-docu.png');
+  background-size: cover;
+  background-position: center;
+  
+  padding: 40px 20px; /* Réduit de 80px 40px */
   text-align: center;
-  box-shadow: 0 20px 40px rgba(79, 128, 56, 0.2);
+  box-shadow: 0 15px 30px rgba(79, 128, 56, 0.2);
   color: white;
 }
 
 .focus-docutheque-label {
   font-family: var(--font-titles);
   font-weight: 900;
-  font-size: 2.8rem;
-  margin-bottom: 15px;
-  letter-spacing: 4px;
+  font-size: 2.2rem; /* Réduit de 2.8rem */
+  margin-bottom: 10px;
+  letter-spacing: 2px;
 }
 
 .docutheque-hero p {
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* Réduit */
   opacity: 0.9;
-  max-width: 700px;
+  max-width: 600px; /* Texte plus étroit pour être plus lisible */
   margin: 0 auto;
 }
 
 /* 6. GALERIE RÉALISATEURS */
 .realisateurs-section {
-  padding: 60px 5%;
+  padding: 30px 5%; /* Réduit de 60px */
   text-align: center;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  margin-bottom: 50px;
+  font-size: 1.3rem;
+  margin-bottom: 30px; /* Réduit de 50px */
   color: #333;
 }
 
 .realisateurs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  max-width: 1200px;
+  /* MODIFICATION : Cartes plus petites (180px au lieu de 250px) */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px; /* Réduit de 40px */
+  max-width: 900px; /* S'aligne avec la largeur du slider */
   margin: 0 auto;
 }
 
@@ -139,38 +129,39 @@ h1, h2, h3 {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 15px; /* Arrondis sur les portraits */
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
   transition: var(--transition);
 }
 
 .realisateur-card:hover img {
-  transform: translateY(-10px); /* Animation au survol */
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  transform: translateY(-5px); /* Animation plus subtile */
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
 .realisateur-name {
-  margin-top: 20px;
+  margin-top: 15px;
   font-family: var(--font-titles);
   font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+  font-size: 0.95rem; /* Réduit */
+  letter-spacing: 0.5px;
 }
 
 /* 7. FOOTER */
 footer {
-  padding: 40px;
-  margin-top: 60px;
+  padding: 20px;
+  margin-top: 30px; /* Réduit */
   border-top: 1px solid rgba(0,0,0,0.05);
   font-family: var(--font-titles);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   opacity: 0.5;
   text-align: center;
 }
 
+/* SWIPER ADJUSTMENTS */
 .swiper-button-next, .swiper-button-prev {
     color: white !important;
-    transform: scale(0.7);
+    transform: scale(0.6); /* Flèches plus petites */
 }
 
 .swiper-pagination-bullet-active {
@@ -178,5 +169,5 @@ footer {
 }
 
 .hero-slider {
-    padding: 20px 5%;
+    padding: 0; /* Suppression du padding interne */
 }
