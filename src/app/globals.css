@@ -1,42 +1,182 @@
+/* 1. IMPORTATION DES POLICES (Cinema Style) */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@300;700;900&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --focus-green: #4f8038;
+  --focus-dark-green: #3f682c;
+  --bg-light: #fcfcfc;
+  --text-dark: #1a1a1a;
+  --font-titles: 'Montserrat', sans-serif;
+  --font-body: 'Lora', serif;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
+/* 2. BASE ET TYPOGRAPHIE */
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  margin: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
+h1, h2, h3 {
+  font-family: var(--font-titles);
+  text-transform: uppercase;
+  letter-spacing: 2px;
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* 3. LE HEADER (Menu) */
+.main-header {
+  background: white;
+  padding: 15px 5%; /* On réduit un peu la hauteur pour plus d'élégance */
+  display: flex;
+  justify-content: space-between; /* Pousse le logo à gauche et la nav à droite */
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.logo h1 {
+  font-weight: 900;
+  color: var(--focus-green);
+  font-size: 1.6rem;
+  letter-spacing: -1px;
+}
+
+.main-nav {
+  display: flex;
+  gap: 30px; /* Espace régulier entre chaque bouton */
+}
+.main-nav a {
+  font-family: var(--font-titles);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-dark);
+  margin-left: 30px;
+  transition: var(--transition);
+  opacity: 0.7;
+}
+
+.main-nav a:hover {
+  color: var(--focus-green);
+  opacity: 1;
+}
+
+/* 4. LE BANDEAU (Slider) */
+.hero-banner {
+  padding: 30px 5%;
+}
+
+.hero-banner > div {
+  border-radius: 20px !important; /* Arrondis pour casser le côté rigide */
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: var(--transition);
+}
+
+/* 5. FOCUS DOCUTHÈQUE (Section centrale) */
+.docutheque-hero {
+  margin: 60px auto;
+  max-width: 1100px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--focus-green), var(--focus-dark-green));
+  padding: 80px 40px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(79, 128, 56, 0.2);
+  color: white;
+}
+
+.focus-docutheque-label {
+  font-family: var(--font-titles);
+  font-weight: 900;
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+  letter-spacing: 4px;
+}
+
+.docutheque-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* 6. GALERIE RÉALISATEURS */
+.realisateurs-section {
+  padding: 60px 5%;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 50px;
+  color: #333;
+}
+
+.realisateurs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.realisateur-card {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+.realisateur-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 15px; /* Arrondis sur les portraits */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: var(--transition);
+}
+
+.realisateur-card:hover img {
+  transform: translateY(-10px); /* Animation au survol */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.realisateur-name {
+  margin-top: 20px;
+  font-family: var(--font-titles);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+/* 7. FOOTER */
+footer {
+  padding: 40px;
+  margin-top: 60px;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  font-family: var(--font-titles);
+  font-size: 0.8rem;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    color: white !important;
+    transform: scale(0.7);
+}
+
+.swiper-pagination-bullet-active {
+    background: white !important;
+}
+
+.hero-slider {
+    padding: 20px 5%;
 }
