@@ -4,25 +4,24 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header style={{ 
+    // AJOUT DE "main-header" pour que le responsive mobile fonctionne
+    <header className="main-header" style={{ 
       position: 'fixed', 
       top: 0, 
       left: 0, 
       width: '100%', 
       boxSizing: 'border-box', 
       zIndex: 100, 
-      // MODIF : Padding un peu plus généreux pour le grand logo
       padding: '10px 5%', 
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
       backgroundColor: 'rgba(255, 255, 255, 0.95)',
       borderBottom: '3px solid #1a1a1a',
-      // MODIF : On augmente la hauteur de la barre pour loger le logo (100px)
       height: '100px' 
     }}>
       
-      {/* --- VOS STYLES INCHANGÉS --- */}
+      {/* --- STYLES CSS LOCAUX --- */}
       <style>{`
         .nav-link {
           position: relative;
@@ -81,12 +80,11 @@ export default function Header() {
           width={0}
           height={0}
           sizes="100vw"
-          // MODIFICATION ICI : On passe à 75px (au lieu de 50px)
           style={{ width: 'auto', height: '75px' }} 
         />
       </Link>
 
-      {/* 2. NAVIGATION INCHANGÉE */}
+      {/* 2. NAVIGATION */}
       <nav style={{ display: 'flex', gap: '50px', alignItems: 'center' }}>
         
         <Link href="/article" className="nav-link">
