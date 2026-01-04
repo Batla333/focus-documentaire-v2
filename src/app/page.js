@@ -10,18 +10,21 @@ import BannerDocutheque from '../components/BannerDocutheque';
 // Configuration Image
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
-  return builder.image(source);
+  // Petite sécurité : si pas d'image, on retourne null
+  return source ? builder.image(source) : null;
 }
 
 // --- RÉCUPÉRATION MIXTE (Articles + Films) ---
 async function getLatestContent() {
+  // MODIFICATION ICI : On ajoute 'poster' dans la liste pour les films
+  // On garde 'affiche' et 'titre' au cas où il reste de vieilles données
   const query = `*[_type in ["article", "film"]] | order(_createdAt desc)[0...6] {
     _id,
     _type,
     "title": coalesce(title, titre),
     slug,
     _createdAt,
-    "image": coalesce(mainImage, affiche),
+    "image": coalesce(mainImage, poster, affiche), 
     "excerpt": coalesce(excerpt, synopsis[0].children[0].text)
   }`;
   
@@ -64,7 +67,7 @@ export default async function HomePage() {
             grid-column: span 8;
             grid-row: span 2;
           }
-          /* Titre du 1er article : On garde Bebas mais on réduit la taille (2.2rem au lieu de 2.5rem ou plus) */
+          /* Titre du 1er article : On garde Bebas mais on réduit la taille */
           .news-item:nth-child(1) h3 { 
               font-size: 2.2rem !important; 
           }
