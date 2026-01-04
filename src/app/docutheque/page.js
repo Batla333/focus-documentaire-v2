@@ -10,14 +10,7 @@ function urlFor(source) {
   return source ? builder.image(source).url() : '/images/placeholder.png';
 }
 
-function getYoutubeId(url) {
-  if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
-
-// --- COMPOSANT CARTE FILM (Version Compacte) ---
+// --- COMPOSANT CARTE FILM ---
 function FilmCard({ film, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,73 +24,45 @@ function FilmCard({ film, onClick }) {
       <div style={{
         position: 'relative',
         aspectRatio: '2/3', 
-        borderRadius: '12px', /* Arrondi réduit */
+        borderRadius: '8px',
         overflow: 'hidden', 
-        boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.3)' : '0 8px 15px rgba(0,0,0,0.1)',
-        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+        boxShadow: isHovered ? '0 15px 30px rgba(0,0,0,0.3)' : '0 5px 15px rgba(0,0,0,0.1)',
+        transform: isHovered ? 'translateY(-5px)' : 'translateY(0)',
         transition: 'all 0.3s ease',
-        backgroundColor: '#000'
+        backgroundColor: '#111'
       }}>
-        {film.affiche && (
+        {film.poster && (
           <img 
-            src={urlFor(film.affiche)} 
-            alt={film.titre}
+            src={urlFor(film.poster)} 
+            alt={film.title}
             style={{ 
               width: '100%', height: '100%', objectFit: 'cover', 
               transition: 'filter 0.3s ease',
-              filter: isHovered ? 'brightness(0.3) blur(2px)' : 'brightness(1)' 
+              filter: isHovered ? 'brightness(0.4)' : 'brightness(1)' 
             }}
           />
         )}
         
-        {/* Overlay avec infos - Tout est réduit ici */}
+        {/* Overlay infos */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
           padding: '15px', textAlign: 'center',
           opacity: isHovered ? 1 : 0,
-          transform: isHovered ? 'translateY(0)' : 'translateY(10px)',
-          transition: 'all 0.3s ease',
+          transition: 'opacity 0.3s ease',
         }}>
-          <h3 style={{ 
-            fontFamily: 'var(--font-bebas)', /* Montserrat Bold */
-            fontWeight: '900',
-            fontSize: '1.4rem', /* Était 2.5rem */
-            margin: '0 0 5px 0', 
-            lineHeight: '1.1', 
-            color: '#fff', 
-            textTransform: 'uppercase'
-          }}>
-            {film.titre}
+          <h3 style={{ fontFamily: 'var(--font-bebas)', fontWeight: '900', fontSize: '1.2rem', margin: '0 0 5px 0', color: '#fff', textTransform: 'uppercase' }}>
+            {film.title}
           </h3>
-          <p style={{ 
-            fontFamily: 'var(--font-bebas)', 
-            fontSize: '0.85rem', /* Réduit */
-            color: '#33a002', 
-            fontWeight: '700', 
-            margin: 0, 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px' 
-          }}>
-            {film.realisateur}
+          <p style={{ fontFamily: 'var(--font-titles)', fontSize: '0.8rem', color: '#33a002', fontWeight: '700', margin: 0, textTransform: 'uppercase' }}>
+            {film.director}
           </p>
-          {film.anneeProduction && (
-            <span style={{ display: 'block', fontFamily: 'var(--font-bebas)', fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', marginTop: '5px' }}>
-              {film.anneeProduction}
-            </span>
+          {film.year && (
+             <p style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.75rem', color: '#ccc', margin: '5px 0 0 0' }}>
+               {film.year}
+             </p>
           )}
-          <div style={{ 
-            marginTop: '15px', 
-            border: '1px solid #33a002', 
-            padding: '6px 15px', 
-            borderRadius: '50px', 
-            color: '#fff', 
-            fontFamily: 'var(--font-titles)', 
-            fontSize: '0.8rem', /* Bouton plus discret */
-            fontWeight: '700',
-            letterSpacing: '1px',
-            textTransform: 'uppercase'
-          }}>
+          <div style={{ marginTop: '15px', border: '1px solid #33a002', padding: '5px 15px', borderRadius: '50px', color: '#fff', fontFamily: 'var(--font-titles)', fontSize: '0.7rem', textTransform: 'uppercase' }}>
             Regarder
           </div>
         </div>
@@ -106,19 +71,16 @@ function FilmCard({ film, onClick }) {
   );
 }
 
-// --- COMPOSANT PLAYER MODAL ---
+// --- PLAYER MODAL ---
 function VideoPlayerModal({ film, onClose }) {
-  if (!film) return null;
-  const videoId = getYoutubeId(film.lienYoutubeComplet);
+  if (!film || !film.youtubeId) return null;
 
   return (
     <div 
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.95)', 
-        zIndex: 11000, 
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '20px',
+        backgroundColor: 'rgba(0, 0, 0, 0.95)', zIndex: 11000, 
+        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
         animation: 'fadeIn 0.3s ease'
       }}
       onClick={onClose} 
@@ -128,31 +90,20 @@ function VideoPlayerModal({ film, onClose }) {
         style={{
           position: 'absolute', top: '20px', right: '20px',
           background: 'none', border: 'none', color: 'white',
-          fontSize: '2rem', /* Plus petit */
-          cursor: 'pointer', fontFamily: 'sans-serif',
-          zIndex: 11001
+          fontSize: '2rem', cursor: 'pointer', fontFamily: 'sans-serif', zIndex: 11001
         }}
-      >
-        ✕
-      </button>
+      >✕</button>
 
-      <div 
-        style={{ width: '100%', maxWidth: '900px', aspectRatio: '16/9', position: 'relative', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}
-        onClick={(e) => e.stopPropagation()} 
-      >
-        {videoId ? (
+      <div style={{ width: '100%', maxWidth: '900px', aspectRatio: '16/9', position: 'relative', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }} onClick={(e) => e.stopPropagation()}>
           <iframe 
             width="100%" height="100%" 
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`} 
-            title={film.titre}
+            src={`https://www.youtube.com/embed/${film.youtubeId}?autoplay=1&rel=0`} 
+            title={film.title} 
             frameBorder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen
+            allowFullScreen 
             style={{ borderRadius: '12px', display: 'block' }}
           ></iframe>
-        ) : (
-          <p style={{ color: 'white', textAlign: 'center' }}>Vidéo non disponible</p>
-        )}
       </div>
       <style jsx>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
     </div>
@@ -167,35 +118,49 @@ export default function Docutheque() {
   const [selectedFilm, setSelectedFilm] = useState(null);
 
   useEffect(() => {
-    const query = `*[_type == "film"] | order(anneeProduction desc) {
-      _id, titre, realisateur, anneeProduction, affiche, lienYoutubeComplet
+    // REQUÊTE GROQ (Utilisation des noms anglais de ton schema)
+    const query = `*[_type == "film"] | order(year desc) {
+      _id, title, director, year, poster, youtubeId, collection
     }`;
     client.fetch(query).then((data) => { setFilms(data); setLoading(false); }).catch((err) => { console.error(err); setLoading(false); });
   }, []);
 
-  const filteredFilms = films.filter(film =>
-    film.titre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    film.realisateur?.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filtrage
+  const searchedFilms = films.filter(film =>
+    film.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    film.director?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // SÉPARATION DES COLLECTIONS
+  // 1. Les classiques ("pioneers")
+  const classicFilms = searchedFilms.filter(film => film.collection === 'pioneers');
+  // 2. Le reste ("focus" ou vide)
+  const standardFilms = searchedFilms.filter(film => film.collection !== 'pioneers');
+
   return (
-    // PaddingTop ajusté : 80px suffit car le header fait 65px
     <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '80px' }}>
       <Header />
 
-      {selectedFilm && (
-        <VideoPlayerModal film={selectedFilm} onClose={() => setSelectedFilm(null)} />
-      )}
+      {selectedFilm && <VideoPlayerModal film={selectedFilm} onClose={() => setSelectedFilm(null)} />}
 
       <section style={{ padding: '0 5%' }}>
         
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', marginTop: '20px' }}>
-          
-          {/* Logo réduit (70px au lieu de 110px) */}
+        {/* EN-TÊTE PAGE */}
+        <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            marginBottom: '40px', 
+            marginTop: '60px'
+        }}>
           <img 
             src="/images/logo-docutheque.png" 
             alt="La Docuthèque" 
-            style={{ height: '70px', width: 'auto', marginBottom: '20px' }}
+            style={{ 
+                height: '100px',
+                width: 'auto', 
+                marginBottom: '20px' 
+            }} 
           />
           
           <input
@@ -204,37 +169,93 @@ export default function Docutheque() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              width: '100%', maxWidth: '400px', /* Barre plus étroite */
-              padding: '10px 20px', /* Padding réduit */
+              width: '100%', maxWidth: '400px', padding: '10px 20px',
               borderRadius: '50px', border: '1px solid #33a002',
-              fontFamily: 'var(--font-titles)', fontSize: '0.9rem', 
-              outline: 'none', textAlign: 'center', 
-              backgroundColor: '#fff',
-              color: '#1a1a1a',
-              boxShadow: '0 5px 15px rgba(0,0,0,0.05)'
+              fontFamily: 'var(--font-titles)', fontSize: '0.9rem', outline: 'none', textAlign: 'center', 
+              backgroundColor: '#fff', color: '#1a1a1a'
             }}
           />
         </div>
 
         {loading ? (
-          <p style={{ textAlign: 'center', fontFamily: '8var(--font-titles)', color: '#666' }}>Chargement...</p>
+          <p style={{ textAlign: 'center', fontFamily: 'var(--font-titles)', color: '#666' }}>Chargement...</p>
         ) : (
-          <div style={{
-            display: 'grid',
-            /* C'EST ICI QUE TOUT CHANGE : minmax(200px) au lieu de 300px -> Affiches plus petites */
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-            gap: '25px', /* Espace réduit */
-            paddingBottom: '80px',
-            maxWidth: '1000px', /* On centre la grille pour ne pas qu'elle soit trop large sur grand écran */
-            margin: '0 auto'
-          }}>
-            {filteredFilms.map(film => (
-              <FilmCard 
-                key={film._id} 
-                film={film} 
-                onClick={setSelectedFilm} 
-              />
-            ))}
+          <div style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '80px' }}>
+            
+            {/* --- SECTION 1 : SÉLECTION FOCUS --- */}
+            {standardFilms.length > 0 && (
+              <div style={{ marginBottom: '60px' }}>
+                <h2 style={{ 
+                  fontFamily: 'var(--font-bebas)', fontSize: '2rem', color: '#1a1a1a', 
+                  borderBottom: '2px solid #33a002', paddingBottom: '5px', marginBottom: '25px', display: 'inline-block'
+                }}>
+                  SÉLECTION <span style={{ color: '#33a002' }}>FOCUS</span>
+                </h2>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                  gap: '25px'
+                }}>
+                  {standardFilms.map(film => (
+                    <FilmCard key={film._id} film={film} onClick={setSelectedFilm} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* --- SECTION 2 : LES PIONNIERS (STYLE MODIFIÉ) --- */}
+            {classicFilms.length > 0 && (
+              <div style={{ 
+                // MODIF 1: Fond plus clair et transparent (RGBA)
+                backgroundColor: 'rgba(84, 3, 3, 1)', 
+                color: '#ffffff',
+                // MODIF 2: Section plus large grâce aux marges négatives
+                margin: '0 -40px',
+                // Compensation du padding interne pour que le contenu reste centré
+                padding: '50px 60px', 
+                borderRadius: '20px', // Un peu plus arrondi pour la modernité
+                border: '1px solid rgba(255,255,255,0.1)', // Bordure subtile
+                boxShadow: '0 15px 40px rgba(0,0,0,0.3)', // Ombre plus douce
+                position: 'relative', zIndex: 1
+              }}>
+                 <h2 style={{ 
+                  fontFamily: 'var(--font-bebas)', 
+                  fontSize: '2.5rem', 
+                  color: '#ffffff',
+                  margin: '0 0 10px 0', 
+                  lineHeight: 1,
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                }}>
+                  LES <span style={{ color: '#33a002' }}>PIONNIERS</span>
+                </h2>
+                <p style={{ 
+                  fontFamily: 'var(--font-montserrat)', 
+                  color: '#e0e0e0', // Gris très clair
+                  fontSize: '0.95rem', 
+                  marginBottom: '30px', 
+                  maxWidth: '600px',
+                  lineHeight: '1.6'
+                }}>
+                  Découvrez ou redécouvrez des documentaires classiques.
+                </p>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                  gap: '25px'
+                }}>
+                  {classicFilms.map(film => (
+                    <FilmCard key={film._id} film={film} onClick={setSelectedFilm} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Message si rien trouvé */}
+            {films.length > 0 && searchedFilms.length === 0 && (
+              <p style={{ textAlign: 'center', fontFamily: 'var(--font-titles)', color: '#999' }}>Aucun film ne correspond à votre recherche.</p>
+            )}
+
           </div>
         )}
       </section>
