@@ -99,6 +99,16 @@ export default function Header() {
           CONTACT
         </Link>
 
+        <Link href="/jeu" className="doc-quizz-nav-link">
+            <img 
+              src="/images/doc-quizz-nav.png" 
+              alt="Doc Quizz" 
+              className="doc-quizz-nav-logo"
+              // 👇 LA LIGNE MAGIQUE EST ICI 👇
+              style={{ height: '45px', width: 'auto', objectFit: 'contain' }} 
+            />
+          </Link>
+
       </nav>
     </header>
   );
