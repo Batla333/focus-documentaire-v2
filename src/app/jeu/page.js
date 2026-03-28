@@ -98,7 +98,7 @@ export default function QuizPage() {
     return () => clearInterval(timer);
   }, [timeLeft, gameStarted, showScore, feedback]);
 
-  // 🟢 GESTION DE LA RÉPONSE AVEC TOLÉRANCE CORRIGÉE
+  // 🟢 GESTION DE LA RÉPONSE AVEC TOLÉRANCE ET MULTIPLES OPTIONS
   const handleAnswer = (userAnswer) => {
     const question = questionsQuiz[currentQuestion];
     
@@ -106,21 +106,28 @@ export default function QuizPage() {
 
     if (userAnswer && userAnswer.trim()) {
       const cleanUser = cleanText(userAnswer);
-      const cleanCorrect = cleanText(question.correctAnswer);
+      
+      // On découpe la réponse de Sanity à chaque virgule pour créer une liste de réponses valides
+      const reponsesPossibles = question.correctAnswer.split(',');
 
-      const distance = calculateDistance(cleanUser, cleanCorrect);
+      // On vérifie la réponse du joueur contre chaque possibilité de la liste
+      for (let i = 0; i < reponsesPossibles.length; i++) {
+        const cleanCorrect = cleanText(reponsesPossibles[i]);
+        const distance = calculateDistance(cleanUser, cleanCorrect);
 
-      let tolerance = 0;
-      if (cleanCorrect.length > 5) {
-        tolerance = 2; // Mots longs : 2 fautes max
-      } else if (cleanCorrect.length > 2) {
-        tolerance = 1; // Mots de 3 à 5 lettres : 1 faute max
-      } else {
-        tolerance = 0; // Mots de 1 à 2 lettres (ex: "M") : 0 faute, match exact exigé !
-      }
+        let tolerance = 0;
+        if (cleanCorrect.length > 5) {
+          tolerance = 2; // Mots longs : 2 fautes max
+        } else if (cleanCorrect.length > 2) {
+          tolerance = 1; // Mots de 3 à 5 lettres : 1 faute max
+        } else {
+          tolerance = 0; // Mots de 1 à 2 lettres (ex: "M") : 0 faute, match exact exigé !
+        }
 
-      if (distance <= tolerance) {
-        isCorrect = true;
+        if (distance <= tolerance) {
+          isCorrect = true;
+          break; // C'est juste ! On arrête de chercher.
+        }
       }
     }
 
@@ -128,7 +135,9 @@ export default function QuizPage() {
       setScore((prev) => prev + 1);
       setFeedback("✅ BONNE RÉPONSE");
     } else {
-      setFeedback(timeLeft === 0 ? "⏰ TEMPS ÉCOULÉ !" : `❌ FAUX ! C'était : ${question.correctAnswer}`);
+      // S'il a faux, on ne lui montre que la première réponse (avant la première virgule) pour que ça reste propre
+      const reponsePrincipale = question.correctAnswer.split(',')[0].trim();
+      setFeedback(timeLeft === 0 ? "⏰ TEMPS ÉCOULÉ !" : `❌ FAUX ! C'était : ${reponsePrincipale}`);
     }
 
     setTimeout(() => {
