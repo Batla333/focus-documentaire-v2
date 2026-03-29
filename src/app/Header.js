@@ -4,7 +4,6 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    // AJOUT DE "main-header" pour que le responsive mobile fonctionne
     <header className="main-header" style={{ 
       position: 'fixed', 
       top: 0, 
@@ -12,7 +11,7 @@ export default function Header() {
       width: '100%', 
       boxSizing: 'border-box', 
       zIndex: 100, 
-      padding: '10px 5%', 
+      padding: '5px 5%', 
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
@@ -21,14 +20,13 @@ export default function Header() {
       height: '100px' 
     }}>
       
-      {/* --- STYLES CSS LOCAUX --- */}
       <style>{`
         .nav-link {
           position: relative;
           text-decoration: none;
           color: #1a1a1a;
-          font-family: var(--font-bebas);
-          font-size: 1.6rem; 
+          font-family: var(--font-bebas); /* Retour à la police longue en hauteur ! */
+          font-size: 1.5rem; /* Taille adaptée pour bien lire le Bebas */
           letter-spacing: 1px;
           padding: 5px 0;
           transition: color 0.3s ease;
@@ -54,11 +52,11 @@ export default function Header() {
         }
 
         .btn-docutheque {
-          padding: 10px 25px; 
-          border: 3px solid #1a1a1a; 
+          padding: 8px 20px; 
+          border: 2px solid #1a1a1a; 
           color: #1a1a1a;
-          font-family: var(--font-bebas);
-          font-size: 1.6rem; 
+          font-family: var(--font-bebas); /* Retour à la police longue en hauteur ! */
+          font-size: 1.5rem; 
           text-decoration: none;
           transition: all 0.3s ease;
           background: transparent;
@@ -71,7 +69,7 @@ export default function Header() {
         }
       `}</style>
 
-      {/* 1. LOGO */}
+      {/* 1. LOGO : Hauteur fixée à 90 */}
       <Link href="/" style={{ display: 'flex', alignItems: 'center' }}>
         <Image 
           src="/images/logo.png" 
@@ -80,7 +78,7 @@ export default function Header() {
           width={0}
           height={0}
           sizes="100vw"
-          style={{ width: 'auto', height: '75px' }} 
+          style={{ width: 'auto', height: '70px', objectFit: 'contain' }} 
         />
       </Link>
 
@@ -104,7 +102,6 @@ export default function Header() {
               src="/images/doc-quizz-nav.png" 
               alt="Doc Quizz" 
               className="doc-quizz-nav-logo"
-              // 👇 LA LIGNE MAGIQUE EST ICI 👇
               style={{ height: '45px', width: 'auto', objectFit: 'contain' }} 
             />
           </Link>

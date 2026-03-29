@@ -35,21 +35,22 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* Typographie du Header et du Menu */
+/* --- LE NOUVEAU HEADER (Plus petit et aérien) --- */
 header a, 
 .nav-link, 
 .header-btn,
 nav ul li a {
-  font-family: var(--font-titles);
-  font-weight: 500;                
+  font-family: var(--font-texts);  /* Montserrat pour l'effet aéré */
+  font-weight: 400;                /* Plus fin, on retire le gras */
   text-transform: uppercase;       
   text-decoration: none;           
-  font-size: 1.3rem;               
-  letter-spacing: 1px;           
+  font-size: 0.9rem;               /* Plus petit */
+  letter-spacing: 2px;             /* Plus d'espace entre les lettres */
   color: var(--text-dark);
+  transition: color 0.2s ease;
 }
 
-/* Tailles des logos */
+/* Tailles des logos (Toujours à 90px comme demandé) */
 .doc-quizz-nav-logo, .quiz-welcome-logo { 
   height: 90px; 
   width: auto; 
@@ -216,4 +217,54 @@ nav ul li a {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* ====================================================== */
+/* 4. RESPONSIVITÉ MOBILE (Téléphones et petites tablettes)*/
+/* ====================================================== */
+@media (max-width: 768px) {
+  
+  /* Ajustement du header pour le mobile */
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    gap: 15px;
+    background-color: #ffffff; 
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Un peu d'espace entre les liens empilés */
+  }
+
+  /* Le header reste aéré, même sur mobile */
+  header a, .nav-link, .header-btn, nav ul li a {
+    font-size: 0.85rem; 
+    letter-spacing: 1.5px;
+  }
+
+  /* Ajustements pour la zone principale du quiz */
+  .quiz-page-wrapper {
+    padding: 20px 10px 10px 10px; 
+    align-items: flex-start; 
+  }
+
+  .quiz-container {
+    padding: 3vh 3vw;
+    border-radius: 16px; 
+  }
+
+  /* Les options de réponses passent sur 1 seule colonne */
+  .quiz-options {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-score-actions {
+    flex-direction: column;
+    gap: 1.5vh;
+  }
 }
